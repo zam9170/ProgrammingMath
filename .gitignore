@@ -37,6 +37,8 @@
 *.in
 
 ### SublimeText ###
+# output and input files
+*.txt
 # Cache files for Sublime Text
 *.tmlanguage.cache
 *.tmPreferences.cache
