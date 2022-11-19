@@ -1,6 +1,5 @@
 /*
-	constraints: 1 <= low, high <= 10^12
-				 1 <= high - low <= 10^6
+	~ mdzama6600
 */
 #include <bits/stdc++.h>
 using namespace std;
@@ -19,39 +18,50 @@ using namespace std;
 typedef long long ll;
 typedef unsigned long long ull;
 
-vector<int> computeSieve(int n) {
+void printSegment(int L, int R, char segment[]) {
+	for (int i = L; i <= R; ++i) {
+		if (segment[i-L])
+			cout << i << ' ';
+	}
+	return ;
+}
+vector<int> computePrimes(int tillSqt) {
+	const int N = tillSqt + 1;
 
-	vector<bool> sieve(n+1, true);
-	sieve[0] = false;
-	sieve[1] = false;
+	char sieve[N];
+	memset(sieve, '1', N);
+	sieve[0] = sieve[1] = false;
 
 	vector<int> primes;
-	for (int i = 2; i <= n; ++i) {
+	for (int i = 2; i < N; ++i) {
 		if (sieve[i]) {
 			primes.EB(i);
-			for (int j = i*i; j <= n; j += i)
+			for (int j = i*i; j < N; j += i)
 				sieve[j] = false;
 		}
 	}
 	return primes;
 }
-void segmentedSieve(ll low, ll high) {
+void printPrimes(int L, int R) {
 
-	vector<int> primes = computeSieve(sqrt(high));
+	const int tillSqt = sqrt(R);
+	const int sizeSeg = R-L + 1;
 
-	vector<bool> segment(high-low+1, true);
-	for (int p: primes) {
-		ll firstMul = low/p*p;
-		if (firstMul < low)
-			firstMul += p;
+	vector<int> primes = computePrimes(tillSqt);
 
-		for (ll i = max(firstMul, (ll)(p)*p); i <= high; i += p)
-			segment[i-low] = false;
+	// create segment and sieve it using primes vector.
+	char segment[sizeSeg];
+	memset(segment, '1', sizeSeg);
+
+	for (int P: primes) {
+		int firstMul = L/P*P, pow2 = P*P;
+		if (firstMul < L)
+			firstMul += P;
+
+		for (int j = max(firstMul, pow2); j <= R; j += P)
+			segment[j-L] = false;
 	}
-	for (ll i = low; i <= high; ++i) {
-		if (segment[i-low] && i != 0 && i != 1)
-			cout << i << '\n';
-	}
+	return printSegment(L, R, segment);
 }
 int main() {
 	fastio();
@@ -59,9 +69,13 @@ int main() {
 
 	cin >> T;
 	while (T --> 0) {
-		ll low, high;
-		cin >> low >> high;
-		segmentedSieve(low, high);
+		read(L);
+		read(R);
+		L = max(L, 2);
+
+		if (L < R)
+			printPrimes(L, R);
+
 		cout << '\n';
 	}
 	return 0;
