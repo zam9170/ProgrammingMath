@@ -54,9 +54,8 @@ void printPrimes(int L, int R) {
 	memset(segment, '1', sizeSeg);
 
 	for (int P: primes) {
-		int firstMul = L/P*P, pow2 = P*P;
-		if (firstMul < L)
-			firstMul += P;
+		int firstMul = ceil(L/(double)(P))*P;
+		int pow2 = P*P;
 
 		for (int j = max(firstMul, pow2); j <= R; j += P)
 			segment[j-L] = false;

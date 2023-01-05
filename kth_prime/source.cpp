@@ -23,9 +23,11 @@ void computeSieve() {
 	sieve[1] = false;
 
 	for (int i = 2; i*i <= N; ++i) {
-		if (sieve[i] == true)
-			for (int j = i*i; j <= N; j += i)
-				sieve[j] = false;
+		if (not sieve[i])
+			continue;
+		
+		for (int j = i*i; j <= N; j += i)
+			sieve[j] = false;
 	}
 	for (int i = 0; i <= N; ++i) {
 		if (sieve[i] == true)
