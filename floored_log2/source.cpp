@@ -20,8 +20,7 @@ typedef unsigned long long ull;
 int log(int n){
 	int t = __builtin_clz(n);
 
-	// __builtin_clz() is gcc builtin function which tells us
-	// the leading 0's in binary representation of a number.
+	// __builtin_clz() is gcc builtin function.
 	return (32-t-1);
 }
 
